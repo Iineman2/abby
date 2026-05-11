@@ -137,6 +137,7 @@ export function createAbby<
         props.initialData ? abby.init(props.initialData) : abby.getProjectData()
       );
       provide(AbbyDataKey, data);
+      let unsubscribe: (() => void) | undefined;
 
       onMounted(() => {
         if (!props.initialData) {
@@ -144,12 +145,12 @@ export function createAbby<
             if (loadedData) data.value = loadedData;
           });
         }
-      });
 
-      const unsubscribe = abby.subscribe((newData) => {
-        data.value = newData as AbbyProjectData;
+        unsubscribe = abby.subscribe((newData) => {
+          data.value = newData as AbbyProjectData;
+        });
       });
-      onBeforeUnmount(unsubscribe);
+      onBeforeUnmount(() => unsubscribe?.());
 
       return () => slots.default?.();
     },

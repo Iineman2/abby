@@ -1,4 +1,4 @@
-import { HttpService } from "@tryabby/core";
+import { AbbyEventType, HttpService } from "@tryabby/core";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
 import { defineComponent, h, nextTick } from "vue";
 import { createApp } from "vue";
@@ -115,7 +115,7 @@ describe("createAbby for Vue", () => {
 
     expect(sendData).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: 1,
+        type: AbbyEventType.ACT,
         data: expect.objectContaining({
           projectId: "project",
           testName: "buttonCopy",
