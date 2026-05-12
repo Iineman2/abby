@@ -15,6 +15,10 @@ class CookieStorageService implements IStorageService {
   ) {}
 
   get(projectId: string, name: string): string | null {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
     return Cookie.get(this.buildKey(projectId, name)) ?? null;
   }
 
@@ -24,12 +28,20 @@ class CookieStorageService implements IStorageService {
     value: string,
     options?: StorageServiceOptions
   ): void {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     Cookie.set(this.buildKey(projectId, name), value, {
       expires: options?.expiresInDays ?? DEFAULT_COOKIE_AGE,
     });
   }
 
   remove(projectId: string, name: string): void {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     Cookie.remove(this.buildKey(projectId, name));
   }
 }
